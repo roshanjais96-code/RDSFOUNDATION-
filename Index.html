@@ -1,0 +1,286 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="RDS FOUNDATION - Education, student guidance, study materials and digital learning.">
+  <title>RDS FOUNDATION | Education for Everyone</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      color: #1f2937;
+      background: #f5f8ff;
+    }
+
+    header {
+      background: #0b2d5c;
+      color: white;
+      padding: 18px 6%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .logo {
+      font-size: 23px;
+      font-weight: bold;
+    }
+
+    nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      font-size: 14px;
+    }
+
+    nav a:hover {
+      color: #ffd166;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, #0b2d5c, #1769aa);
+      color: white;
+      text-align: center;
+      padding: 85px 20px;
+    }
+
+    .hero h1 {
+      font-size: clamp(32px, 6vw, 52px);
+      margin-bottom: 15px;
+    }
+
+    .hero p {
+      max-width: 650px;
+      margin: 0 auto 25px;
+      font-size: 17px;
+    }
+
+    .btn {
+      display: inline-block;
+      background: #ffd166;
+      color: #172b4d;
+      padding: 12px 23px;
+      border-radius: 7px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .btn:hover {
+      background: #ffbd35;
+    }
+
+    section {
+      padding: 55px 7%;
+    }
+
+    .section-title {
+      text-align: center;
+      color: #0b2d5c;
+      font-size: 30px;
+      margin-bottom: 12px;
+    }
+
+    .section-intro {
+      text-align: center;
+      max-width: 700px;
+      margin: 0 auto 30px;
+      color: #596579;
+    }
+
+    .about {
+      text-align: center;
+      max-width: 850px;
+      margin: auto;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 22px;
+      margin-top: 30px;
+    }
+
+    .card {
+      background: white;
+      padding: 27px 22px;
+      border-radius: 12px;
+      box-shadow: 0 5px 20px rgba(11, 45, 92, 0.08);
+      border-bottom: 4px solid #1769aa;
+    }
+
+    .card h3 {
+      color: #0b2d5c;
+      margin-bottom: 10px;
+    }
+
+    .icon {
+      font-size: 34px;
+      margin-bottom: 10px;
+    }
+
+    .mission {
+      background: #e7f0ff;
+      text-align: center;
+    }
+
+    .contact {
+      text-align: center;
+    }
+
+    .contact p {
+      margin: 12px 0 22px;
+    }
+
+    footer {
+      background: #0b2d5c;
+      color: white;
+      text-align: center;
+      padding: 22px 15px;
+      font-size: 14px;
+    }
+
+    footer a {
+      color: #ffd166;
+      text-decoration: none;
+    }
+
+    @media (max-width: 600px) {
+      header {
+        justify-content: center;
+        text-align: center;
+      }
+
+      nav {
+        justify-content: center;
+      }
+
+      .hero {
+        padding: 60px 18px;
+      }
+
+      section {
+        padding: 42px 6%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <div class="logo">RDS FOUNDATION</div>
+
+    <nav>
+      <a href="#home">Home</a>
+      <a href="#about">About</a>
+      <a href="#education">Education</a>
+      <a href="#mission">Mission</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero" id="home">
+      <h1>Welcome to RDS FOUNDATION</h1>
+      <p>
+        Learn, grow and achieve your dreams.
+        We believe that quality education and the right guidance
+        can create a brighter future for everyone.
+      </p>
+      <a class="btn" href="#education">Explore Education</a>
+    </section>
+
+    <section id="about">
+      <div class="about">
+        <h2 class="section-title">About Us</h2>
+        <p>
+          RDS FOUNDATION is an educational initiative dedicated to
+          learning, student development and digital education.
+          Our goal is to make useful educational information
+          accessible to students and learners.
+        </p>
+      </div>
+    </section>
+
+    <section id="education">
+      <h2 class="section-title">Our Education Services</h2>
+      <p class="section-intro">
+        Explore learning resources designed to support your educational journey.
+      </p>
+
+      <div class="cards">
+        <div class="card">
+          <div class="icon">📚</div>
+          <h3>Study Materials</h3>
+          <p>
+            Learn with helpful notes, educational resources and
+            study materials. More resources will be added soon.
+          </p>
+        </div>
+
+        <div class="card">
+          <div class="icon">🎓</div>
+          <h3>Student Guidance</h3>
+          <p>
+            Discover educational opportunities, study tips and
+            guidance to help you plan your future.
+          </p>
+        </div>
+
+        <div class="card">
+          <div class="icon">💻</div>
+          <h3>Digital Learning</h3>
+          <p>
+            Develop digital skills and explore new ways to learn
+            through technology and online resources.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="mission" id="mission">
+      <h2 class="section-title">Our Mission</h2>
+      <p class="section-intro">
+        Our mission is to encourage learning, support students
+        and make education more accessible through digital resources.
+        Together, we can learn today and build a better tomorrow.
+      </p>
+    </section>
+
+    <section class="contact" id="contact">
+      <h2 class="section-title">Contact Us</h2>
+      <p>
+        Have a question or suggestion? We would love to hear from you.
+      </p>
+      <a class="btn"
+         href="mailto:roshankrjais@gmail.com?subject=RDS%20FOUNDATION%20Enquiry">
+        Email Us
+      </a>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2026 RDS FOUNDATION. All rights reserved.</p>
+    <p>Learn • Grow • Achieve</p>
+  </footer>
+
+</body>
+  </html>
+  
