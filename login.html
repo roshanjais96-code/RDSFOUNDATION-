@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login | RDS FOUNDATION</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 20px;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #eaf3ff, #d7e7ff);
+    }
+    .card {
+      width: 100%;
+      max-width: 400px;
+      padding: 30px;
+      background: white;
+      border-radius: 18px;
+      box-shadow: 0 8px 30px #174a8020;
+    }
+    h1 { color: #0756a5; text-align: center; margin-bottom: 8px; }
+    p { color: #667085; text-align: center; }
+    input {
+      width: 100%;
+      padding: 14px;
+      margin: 9px 0;
+      border: 1px solid #ccd6e0;
+      border-radius: 9px;
+      font-size: 16px;
+    }
+    button {
+      width: 100%;
+      padding: 14px;
+      margin-top: 12px;
+      border: 0;
+      border-radius: 9px;
+      background: #0756a5;
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .switch {
+      display: block;
+      margin-top: 18px;
+      color: #0756a5;
+      text-align: center;
+      cursor: pointer;
+    }
+    #message { margin-top: 14px; font-size: 14px; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>RDS FOUNDATION</h1>
+    <p id="heading">Login to your account</p>
+
+    <form id="authForm">
+      <input id="email" type="email" placeholder="Email address" required>
+      <input id="password" type="password"
+             placeholder="Password (minimum 6 characters)"
+             minlength="6" required>
+      <button id="submitBtn" type="submit">Login</button>
+    </form>
+
+    <span class="switch" id="toggle">Create a new account</span>
+    <p id="message" role="status"></p>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from
+      "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
+
+    import {
+      getAuth,
+      createUserWithEmailAndPassword,
+      signInWithEmailAndPassword
+    } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDWMj_VxgKZFd0XI6CcbNAnKorzU56Sy8I",
+      authDomain: "rds-foundation.firebaseapp.com",
+      projectId: "rds-foundation",
+      storageBucket: "rds-foundation.firebasestorage.app",
+      messagingSenderId: "904509564072",
+      appId: "1:904509564072:web:54fb399f27157429264e9d"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    let isSignup = false;
+
+    const form = document.getElementById("authForm");
+    const toggle = document.getElementById("toggle");
+    const heading = document.getElementById("heading");
+    const submitBtn = document.getElementById("submitBtn");
+    const message = document.getElementById("message");
+
+    toggle.addEventListener("click", () => {
+      isSignup = !isSignup;
+      heading.textContent = isSignup
+        ? "Create your account"
+        : "Login to your account";
+      submitBtn.textContent = isSignup ? "Sign Up" : "Login";
+      toggle.textContent = isSignup
+        ? "Already have an account? Login"
+        : "Create a new account";
+      message.textContent = "";
+    });
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      message.textContent = "Please wait...";
+
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value;
+
+      try {
+        if (isSignup) {
+          await createUserWithEmailAndPassword(auth, email, password);
+          message.textContent = "Account created successfully!";
+        } else {
+          await signInWithEmailAndPassword(auth, email, password);
+          message.textContent = "Login successful!";
+        }
+
+        setTimeout(() => {
+          window.location.href = "index.html";
+        }, 1000);
+
+      } catch (error) {
+        const errors = {
+          "auth/email-already-in-use": "This email is already registered.",
+          "auth/invalid-email": "Please enter a valid email.",
+          "auth/weak-password": "Password must be at least 6 characters.",
+          "auth/invalid-credential": "Email or password is incorrect.",
+          "auth/too-many-requests": "Too many attempts. Try again later."
+        };
+
+        message.textContent =
+          errors[error.code] || "Something went wrong. Please try again.";
+      }
+    });
+  </script>
+</body>
+  </html>
