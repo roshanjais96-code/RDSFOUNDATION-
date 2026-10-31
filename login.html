@@ -1,11 +1,14 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>RDS FOUNDATION | Login</title>
+
   <style>
     * { box-sizing: border-box; }
+
     body {
       margin: 0;
       min-height: 100vh;
@@ -15,6 +18,7 @@
       font-family: Arial, sans-serif;
       background: linear-gradient(135deg, #063b78, #0878d1);
     }
+
     .card {
       width: 100%;
       max-width: 410px;
@@ -23,6 +27,7 @@
       border-radius: 20px;
       box-shadow: 0 12px 35px #164b8025;
     }
+
     .logo {
       width: 62px;
       height: 62px;
@@ -35,18 +40,21 @@
       font-size: 25px;
       font-weight: bold;
     }
+
     h1 {
       margin: 16px 0 6px;
       color: #0756a5;
       text-align: center;
       font-size: 25px;
     }
+
     .subtitle {
       color: #718096;
       text-align: center;
       font-size: 14px;
       margin-bottom: 25px;
     }
+
     label {
       display: block;
       margin: 14px 0 7px;
@@ -54,6 +62,7 @@
       font-size: 14px;
       font-weight: bold;
     }
+
     input {
       width: 100%;
       padding: 14px;
@@ -62,7 +71,9 @@
       outline: none;
       font-size: 15px;
     }
+
     input:focus { border-color: #0756a5; }
+
     button {
       width: 100%;
       padding: 14px;
@@ -75,7 +86,9 @@
       font-weight: bold;
       cursor: pointer;
     }
+
     button:disabled { opacity: .6; }
+
     .switch {
       display: block;
       margin-top: 20px;
@@ -85,12 +98,14 @@
       font-size: 14px;
       font-weight: bold;
     }
+
     #message {
       min-height: 20px;
       text-align: center;
       font-size: 14px;
       overflow-wrap: anywhere;
     }
+
     .footer {
       margin-top: 22px;
       text-align: center;
@@ -99,21 +114,34 @@
     }
   </style>
 </head>
+
 <body>
   <main class="card">
     <div class="logo">RDS</div>
+
     <h1>RDS FOUNDATION</h1>
-    <p class="subtitle" id="subtitle">Welcome back! Login to continue.</p>
+
+    <p class="subtitle" id="subtitle">
+      Welcome back! Login to continue.
+    </p>
 
     <form id="authForm">
       <label for="email">Email Address</label>
-      <input id="email" type="email"
-             placeholder="Enter your email" required>
+      <input
+        id="email"
+        type="email"
+        placeholder="Enter your email"
+        required
+      >
 
       <label for="password">Password</label>
-      <input id="password" type="password"
-             placeholder="Enter your password"
-             minlength="6" required>
+      <input
+        id="password"
+        type="password"
+        placeholder="Enter your password"
+        minlength="6"
+        required
+      >
 
       <button id="submitBtn" type="submit">Login</button>
     </form>
@@ -123,7 +151,10 @@
     </span>
 
     <p id="message" role="status" aria-live="polite"></p>
-    <div class="footer">© RDS FOUNDATION | Education for Everyone</div>
+
+    <div class="footer">
+      © RDS FOUNDATION | Education for Everyone
+    </div>
   </main>
 
   <script type="module">
@@ -137,6 +168,13 @@
     } from
       "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
 
+    import {
+      getFirestore,
+      doc,
+      setDoc
+    } from
+      "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
+
     const firebaseConfig = {
       apiKey: "AIzaSyDWMj_VxgKZFd0XI6CcbNAnKorzU56Sy8I",
       authDomain: "rds-foundation.firebaseapp.com",
@@ -148,7 +186,8 @@
 
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
-const db = getFirestore(app);
+    const db = getFirestore(app);
+
     let isSignup = false;
 
     const form = document.getElementById("authForm");
@@ -164,7 +203,9 @@ const db = getFirestore(app);
         ? "Create your student account."
         : "Welcome back! Login to continue.";
 
-      submitBtn.textContent = isSignup ? "Create Student Account" : "Login";
+      submitBtn.textContent = isSignup
+        ? "Create Student Account"
+        : "Login";
 
       toggle.textContent = isSignup
         ? "Already registered? Login"
@@ -175,40 +216,75 @@ const db = getFirestore(app);
 
     form.addEventListener("submit", async (event) => {
       event.preventDefault();
+
       submitBtn.disabled = true;
       message.textContent = "Please wait...";
 
-      const email = document.getElementById("email").value.trim();
-      const password = document.getElementById("password").value;
+      const email =
+        document.getElementById("email").value.trim();
+
+      const password =
+        document.getElementById("password").value;
 
       try {
         if (isSignup) {
-          await createUserWithEmailAndPassword(auth, email, password);
+          const credential =
+            await createUserWithEmailAndPassword(
+              auth,
+              email,
+              password
+            );
+
+          await setDoc(
+            doc(db, "roles", credential.user.uid),
+            {
+              role: "student"
+            }
+          );
+
           message.textContent =
-            "Account created. Role verification is still pending.";
+            "Student account created successfully!";
         } else {
-          await signInWithEmailAndPassword(auth, email, password);
+          await signInWithEmailAndPassword(
+            auth,
+            email,
+            password
+          );
+
           message.textContent =
-            "Login successful. Checking account access...";
+            "Login successful. Account access will be checked next.";
         }
 
-        // Role-based dashboard routing will be added after
-        // trusted Student/Member/Admin verification is configured.
       } catch (error) {
         const errors = {
-          "auth/email-already-in-use": "This email is already registered.",
-          "auth/invalid-email": "Please enter a valid email.",
-          "auth/weak-password": "Password must be at least 6 characters.",
-          "auth/invalid-credential": "Email or password is incorrect.",
-          "auth/too-many-requests": "Too many attempts. Try again later."
+          "auth/email-already-in-use":
+            "This email is already registered.",
+
+          "auth/invalid-email":
+            "Please enter a valid email.",
+
+          "auth/weak-password":
+            "Password must be at least 6 characters.",
+
+          "auth/invalid-credential":
+            "Email or password is incorrect.",
+
+          "auth/too-many-requests":
+            "Too many attempts. Try again later.",
+
+          "permission-denied":
+            "Role could not be saved. Please contact Admin."
         };
 
         message.textContent =
-          errors[error.code] || "Something went wrong. Please try again.";
+          errors[error.code] ||
+          "Something went wrong. Please try again.";
+
       } finally {
         submitBtn.disabled = false;
       }
     });
   </script>
 </body>
-    </html>
+      </html>
+      
