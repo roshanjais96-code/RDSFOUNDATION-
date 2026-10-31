@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login | RDS FOUNDATION</title>
+  <title>RDS FOUNDATION | Login</title>
   <style>
     * { box-sizing: border-box; }
     body {
@@ -13,64 +13,118 @@
       place-items: center;
       padding: 20px;
       font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #eaf3ff, #d7e7ff);
+      background: linear-gradient(135deg, #eaf3ff, #cfe2ff);
     }
     .card {
       width: 100%;
-      max-width: 400px;
-      padding: 30px;
-      background: white;
-      border-radius: 18px;
-      box-shadow: 0 8px 30px #174a8020;
+      max-width: 410px;
+      padding: 32px 28px;
+      background: #fff;
+      border-radius: 20px;
+      box-shadow: 0 12px 35px #164b8025;
     }
-    h1 { color: #0756a5; text-align: center; margin-bottom: 8px; }
-    p { color: #667085; text-align: center; }
+    .logo {
+      width: 62px;
+      height: 62px;
+      margin: auto;
+      display: grid;
+      place-items: center;
+      border-radius: 18px;
+      background: #0756a5;
+      color: white;
+      font-size: 25px;
+      font-weight: bold;
+    }
+    h1 {
+      margin: 16px 0 6px;
+      color: #0756a5;
+      text-align: center;
+      font-size: 25px;
+    }
+    .subtitle {
+      color: #718096;
+      text-align: center;
+      font-size: 14px;
+      margin-bottom: 25px;
+    }
+    label {
+      display: block;
+      margin: 14px 0 7px;
+      color: #29445f;
+      font-size: 14px;
+      font-weight: bold;
+    }
     input {
       width: 100%;
       padding: 14px;
-      margin: 9px 0;
-      border: 1px solid #ccd6e0;
-      border-radius: 9px;
-      font-size: 16px;
+      border: 1px solid #d3deeb;
+      border-radius: 10px;
+      outline: none;
+      font-size: 15px;
     }
+    input:focus { border-color: #0756a5; }
     button {
       width: 100%;
       padding: 14px;
-      margin-top: 12px;
+      margin-top: 22px;
       border: 0;
-      border-radius: 9px;
+      border-radius: 10px;
       background: #0756a5;
       color: white;
       font-size: 16px;
       font-weight: bold;
       cursor: pointer;
     }
+    button:disabled { opacity: .6; }
     .switch {
       display: block;
-      margin-top: 18px;
+      margin-top: 20px;
       color: #0756a5;
       text-align: center;
       cursor: pointer;
+      font-size: 14px;
+      font-weight: bold;
     }
-    #message { margin-top: 14px; font-size: 14px; }
+    #message {
+      min-height: 20px;
+      text-align: center;
+      font-size: 14px;
+      overflow-wrap: anywhere;
+    }
+    .footer {
+      margin-top: 22px;
+      text-align: center;
+      color: #8492a6;
+      font-size: 12px;
+    }
   </style>
 </head>
 <body>
-  <div class="card">
+  <main class="card">
+    <div class="logo">RDS</div>
     <h1>RDS FOUNDATION</h1>
-    <p id="heading">Login to your account</p>
+    <p class="subtitle" id="subtitle">Welcome back! Login to continue.</p>
 
     <form id="authForm">
-      <input id="email" type="email" placeholder="Email address" required>
+      <label for="email">Email Address</label>
+      <input id="email" type="email"
+             placeholder="Enter your email" required>
+
+      <label for="password">Password</label>
       <input id="password" type="password"
-             placeholder="Password (minimum 6 characters)"
+             placeholder="Enter your password"
              minlength="6" required>
+
       <button id="submitBtn" type="submit">Login</button>
     </form>
 
-    <span class="switch" id="toggle">Create a new account</span>
-    <p id="message" role="status"></p>
-  </div>
+    <span class="switch" id="toggle">
+      New student? Create an account
+    </span>
+
+    <p id="message" role="status" aria-live="polite"></p>
+    <div class="footer">© RDS FOUNDATION | Education for Everyone</div>
+  </main>
 
   <script type="module">
     import { initializeApp } from
@@ -80,7 +134,8 @@
       getAuth,
       createUserWithEmailAndPassword,
       signInWithEmailAndPassword
-    } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
+    } from
+      "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyDWMj_VxgKZFd0XI6CcbNAnKorzU56Sy8I",
@@ -98,24 +153,29 @@
 
     const form = document.getElementById("authForm");
     const toggle = document.getElementById("toggle");
-    const heading = document.getElementById("heading");
+    const subtitle = document.getElementById("subtitle");
     const submitBtn = document.getElementById("submitBtn");
     const message = document.getElementById("message");
 
     toggle.addEventListener("click", () => {
       isSignup = !isSignup;
-      heading.textContent = isSignup
-        ? "Create your account"
-        : "Login to your account";
-      submitBtn.textContent = isSignup ? "Sign Up" : "Login";
+
+      subtitle.textContent = isSignup
+        ? "Create your student account."
+        : "Welcome back! Login to continue.";
+
+      submitBtn.textContent = isSignup ? "Create Student Account" : "Login";
+
       toggle.textContent = isSignup
-        ? "Already have an account? Login"
-        : "Create a new account";
+        ? "Already registered? Login"
+        : "New student? Create an account";
+
       message.textContent = "";
     });
 
     form.addEventListener("submit", async (event) => {
       event.preventDefault();
+      submitBtn.disabled = true;
       message.textContent = "Please wait...";
 
       const email = document.getElementById("email").value.trim();
@@ -124,16 +184,16 @@
       try {
         if (isSignup) {
           await createUserWithEmailAndPassword(auth, email, password);
-          message.textContent = "Account created successfully!";
+          message.textContent =
+            "Account created. Role verification is still pending.";
         } else {
           await signInWithEmailAndPassword(auth, email, password);
-          message.textContent = "Login successful!";
+          message.textContent =
+            "Login successful. Checking account access...";
         }
 
-        setTimeout(() => {
-          window.location.href = "index.html";
-        }, 1000);
-
+        // Role-based dashboard routing will be added after
+        // trusted Student/Member/Admin verification is configured.
       } catch (error) {
         const errors = {
           "auth/email-already-in-use": "This email is already registered.",
@@ -145,8 +205,10 @@
 
         message.textContent =
           errors[error.code] || "Something went wrong. Please try again.";
+      } finally {
+        submitBtn.disabled = false;
       }
     });
   </script>
 </body>
-  </html>
+    </html>
