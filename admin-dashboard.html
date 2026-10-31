@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RDS Foundation - Admin Dashboard</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #0755b8, #eaf4ff);
+      min-height: 100vh;
+      padding: 20px;
+      color: #123;
+    }
+    .container {
+      max-width: 850px;
+      margin: 35px auto;
+      background: white;
+      padding: 25px;
+      border-radius: 16px;
+      box-shadow: 0 8px 25px #00336630;
+    }
+    h1 { color: #0755b8; text-align: center; }
+    .status { text-align: center; color: #555; }
+    .user {
+      padding: 12px;
+      margin: 10px 0;
+      background: #eef6ff;
+      border-radius: 8px;
+      overflow-wrap: anywhere;
+    }
+    button {
+      background: #0755b8;
+      color: white;
+      border: 0;
+      padding: 12px 18px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    button:hover { background: #003f91; }
+    #logout { display: block; margin: 20px auto; }
+  </style>
+</head>
+<body>
+  <main class="container">
+    <h1>RDS FOUNDATION</h1>
+    <h2>Admin Dashboard</h2>
+    <p id="status" class="status">Checking admin access...</p>
+    <section id="content" hidden>
+      <h3>Welcome, Admin</h3>
+      <p>यह Admin Dashboard है।</p>
+      <h3>Student और Member सूची</h3>
+      <div id="users">Loading...</div>
+      <button id="logout">Logout</button>
+    </section>
+  </main>
+
+  <script type="module">
+    import { initializeApp } from
+      "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged, signOut } from
+      "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
+    import { getFirestore, doc, getDoc } from
+      "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDWMj_VxgKZFd0XI6CcbNAnKorzU56Sy8I",
+      authDomain: "rds-foundation.firebaseapp.com",
+      projectId: "rds-foundation",
+      storageBucket: "rds-foundation.firebasestorage.app",
+      messagingSenderId: "904509564072",
+      appId: "1:904509564072:web:54fb399f27157429264e9d"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    const statusBox = document.getElementById("status");
+    const content = document.getElementById("content");
+
+    onAuthStateChanged(auth, async (user) => {
+      if (!user) {
+        location.replace("login.html");
+        return;
+      }
+
+      try {
+        const roleSnap = await getDoc(doc(db, "roles", user.uid));
+
+        if (!roleSnap.exists() || roleSnap.data().role !== "admin") {
+          statusBox.textContent = "Access denied. Admin only.";
+          await signOut(auth);
+          setTimeout(() => location.replace("login.html"), 1500);
+          return;
+        }
+
+        statusBox.textContent = "Admin access verified.";
+        content.hidden = false;
+
+        // Role documents do not contain email addresses.
+        document.getElementById("users").textContent =
+          "Role records can be managed here after a secure listing method is configured.";
+      } catch (error) {
+        statusBox.textContent = "Could not verify access: " + error.message;
+      }
+    });
+
+    document.getElementById("logout").addEventListener("click", async () => {
+      await signOut(auth);
+      location.replace("login.html");
+    });
+  </script>
+</body>
+        </html>
