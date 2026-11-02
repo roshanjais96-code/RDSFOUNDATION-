@@ -1,0 +1,167 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login | RDS FOUNDATION</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #0b2d5c, #1769aa);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .login-box {
+      background: white;
+      width: 100%;
+      max-width: 390px;
+      padding: 30px 25px;
+      border-radius: 15px;
+      box-shadow: 0 8px 30px rgba(0,0,0,.2);
+      text-align: center;
+    }
+    h1 { color: #0b2d5c; font-size: 25px; }
+    p { color: #596579; }
+    input {
+      width: 100%;
+      padding: 13px;
+      margin: 9px 0;
+      border: 1px solid #ccd4df;
+      border-radius: 7px;
+      font-size: 16px;
+    }
+    button {
+      width: 100%;
+      padding: 13px;
+      margin-top: 12px;
+      border: 0;
+      border-radius: 7px;
+      background: #0b2d5c;
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    button:hover { background: #1769aa; }
+    .switch {
+      background: none;
+      color: #0756a5;
+      margin-top: 10px;
+    }
+    #message {
+      font-size: 14px;
+      overflow-wrap: anywhere;
+    }
+  </style>
+</head>
+<body>
+  <div class="login-box">
+    <h1>RDS FOUNDATION</h1>
+    <p id="heading">Login to continue</p>
+
+    <form id="authForm">
+      <input id="email" type="email" placeholder="Email address" required>
+      <input id="password" type="password"
+             placeholder="Password (at least 6 characters)"
+             minlength="6" required>
+      <button id="submitBtn" type="submit">Login</button>
+    </form>
+
+    <button class="switch" id="switchBtn" type="button">
+      Create a new account
+    </button>
+
+    <p id="message" role="status"></p>
+  </div>
+
+  <script type="module">
+    import { initializeApp }
+      from "https://www.gstatic.com/firebasejs/13.1.0/firebase-app.js";
+
+    import {
+      getAuth,
+      createUserWithEmailAndPassword,
+      signInWithEmailAndPassword,
+      onAuthStateChanged
+    } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBhCa4winT7NC_AW9_5G-7GrLAnciikMKw",
+      authDomain: "rds-foundation-d9a6d.firebaseapp.com",
+      projectId: "rds-foundation-d9a6d",
+      storageBucket: "rds-foundation-d9a6d.firebasestorage.app",
+      messagingSenderId: "1038582676561",
+      appId: "1:1038582676561:web:4e713e1f01f2f0edd5cc70",
+      measurementId: "G-VB3RFGC3D9"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    const form = document.getElementById("authForm");
+    const email = document.getElementById("email");
+    const password = document.getElementById("password");
+    const message = document.getElementById("message");
+    const heading = document.getElementById("heading");
+    const submitBtn = document.getElementById("submitBtn");
+    const switchBtn = document.getElementById("switchBtn");
+
+    let isSignup = false;
+
+    onAuthStateChanged(auth, user => {
+      if (user) {
+        location.replace("index.html");
+      }
+    });
+
+    switchBtn.addEventListener("click", () => {
+      isSignup = !isSignup;
+      heading.textContent = isSignup
+        ? "Create your account" : "Login to continue";
+      submitBtn.textContent = isSignup ? "Sign Up" : "Login";
+      switchBtn.textContent = isSignup
+        ? "Already have an account? Login"
+        : "Create a new account";
+      message.textContent = "";
+    });
+
+    form.addEventListener("submit", async event => {
+      event.preventDefault();
+      message.textContent = "Please wait...";
+      submitBtn.disabled = true;
+
+      try {
+        if (isSignup) {
+          await createUserWithEmailAndPassword(
+            auth, email.value.trim(), password.value
+          );
+        } else {
+          await signInWithEmailAndPassword(
+            auth, email.value.trim(), password.value
+          );
+        }
+        location.replace("index.html");
+      } catch (error) {
+        const errors = {
+          "auth/email-already-in-use": "This email already has an account. Please log in.",
+          "auth/invalid-email": "Please enter a valid email address.",
+          "auth/weak-password": "Please choose a stronger password.",
+          "auth/invalid-credential": "Email or password is incorrect.",
+          "auth/network-request-failed": "Network error. Please try again."
+        };
+        message.textContent =
+          errors[error.code] || "Something went wrong. Please try again.";
+      } finally {
+        submitBtn.disabled = false;
+      }
+    });
+  </script>
+</body>
+  </html>
+    
