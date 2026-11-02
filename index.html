@@ -531,7 +531,38 @@
     <p>&copy; 2026 RDS FOUNDATION. All rights reserved.</p>
     <p>Learn • Grow • Achieve</p>
   </footer>
-  <!-- यहाँ Firebase वाला script पेस्ट होगा -->
+  
+<script type="module">
+  import { initializeApp }
+    from "https://www.gstatic.com/firebasejs/13.1.0/firebase-app.js";
+
+  import {
+    getAuth,
+    onAuthStateChanged
+  } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-auth.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyBhCa4winT7NC_AW9_5G-7GrLAnciikMKw",
+    authDomain: "rds-foundation-d9a6d.firebaseapp.com",
+    projectId: "rds-foundation-d9a6d",
+    storageBucket: "rds-foundation-d9a6d.firebasestorage.app",
+    messagingSenderId: "1038582676561",
+    appId: "1:1038582676561:web:4e713e1f01f2f0edd5cc70",
+    measurementId: "G-VB3RFGC3D9"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+
+  onAuthStateChanged(auth, user => {
+    if (user) {
+      document.body.style.visibility = "visible";
+    } else {
+      location.replace("login.html");
+    }
+  });
+</script>
+  
 
 </body>
 </html>
