@@ -2,105 +2,171 @@
 <!DOCTYPE html>
 <html lang="hi">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>RDS FOUNDATION | Payment</title>
-<style>
-*{box-sizing:border-box}
-body{
-  margin:0;
-  font-family:Arial,sans-serif;
-  background:#071b36;
-  color:#fff;
-}
-header{
-  padding:30px 15px;
-  text-align:center;
-  background:linear-gradient(135deg,#063b78,#0878d1);
-}
-header h1{margin:0;font-size:28px}
-header p{color:#e2efff}
-.container{max-width:650px;margin:25px auto;padding:15px}
-.card{
-  background:white;
-  color:#17324f;
-  padding:22px;
-  margin-bottom:20px;
-  border-radius:16px;
-}
-h2{color:#0756a5;margin-top:0}
-.amounts{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:12px;
-}
-.amount{
-  padding:16px;
-  text-align:center;
-  border:2px solid #d7e7f7;
-  border-radius:10px;
-  font-weight:bold;
-}
-.qr{text-align:center}
-.qr img{
-  display:block;
-  width:100%;
-  max-width:340px;
-  height:auto;
-  margin:15px auto;
-  border-radius:10px;
-}
-.note{
-  background:#fff7df;
-  color:#76520a;
-  padding:14px;
-  border-radius:10px;
-  line-height:1.5;
-}
-footer{text-align:center;padding:20px;color:#b8cce2;font-size:13px}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RDS FOUNDATION | Payment</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #071b36;
+      color: #fff;
+    }
+
+    header {
+      padding: 30px 15px;
+      text-align: center;
+      background: linear-gradient(135deg, #063b78, #0878d1);
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 28px;
+    }
+
+    header p {
+      color: #e2efff;
+    }
+
+    .container {
+      max-width: 650px;
+      margin: 25px auto;
+      padding: 15px;
+    }
+
+    .card {
+      background: #fff;
+      color: #17324f;
+      padding: 22px;
+      margin-bottom: 20px;
+      border-radius: 16px;
+    }
+
+    h2 {
+      color: #0756a5;
+      margin-top: 0;
+    }
+
+    .amounts {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+
+    .amount {
+      padding: 16px;
+      text-align: center;
+      border: 2px solid #d7e7f7;
+      border-radius: 10px;
+      font-weight: bold;
+    }
+
+    .qr {
+      text-align: center;
+    }
+
+    .qr img {
+      display: block;
+      width: 100%;
+      max-width: 340px;
+      height: auto;
+      margin: 15px auto;
+      border-radius: 10px;
+    }
+
+    .note {
+      background: #fff7df;
+      color: #76520a;
+      padding: 14px;
+      border-radius: 10px;
+      line-height: 1.5;
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      color: #b8cce2;
+      font-size: 13px;
+    }
+
+    @media (max-width: 360px) {
+      header h1 {
+        font-size: 23px;
+      }
+
+      .card {
+        padding: 16px;
+      }
+    }
+  </style>
 </head>
+
 <body>
 
-<header>
-  <h1>RDS FOUNDATION</h1>
-  <p>Support Education • Empower Students</p>
-</header>
+  <header>
+    <h1>RDS FOUNDATION</h1>
+    <p>Support Education • Empower Students</p>
+  </header>
 
-<main class="container">
+  <main class="container">
 
-  <section class="card">
-    <h2>Support Our Foundation</h2>
-    <p>आपका सहयोग शिक्षा को आगे बढ़ाने में मदद कर सकता है।</p>
-    <div class="amounts">
-      <div class="amount">₹100</div>
-      <div class="amount">₹200</div>
-      <div class="amount">₹500</div>
-      <div class="amount">₹1,000</div>
+    <section class="card">
+      <h2>Support Our Foundation</h2>
+
+      <p>
+        आपका सहयोग शिक्षा को आगे बढ़ाने में मदद कर सकता है।
+      </p>
+
+      <div class="amounts">
+        <div class="amount">₹100</div>
+        <div class="amount">₹200</div>
+        <div class="amount">₹500</div>
+        <div class="amount">₹1,000</div>
+      </div>
+
+      <p>अपनी पसंद की राशि PhonePe QR से भुगतान करें।</p>
+    </section>
+
+    <section class="card">
+      <h2>Study Materials</h2>
+      <p>
+        Study Notes और PDF की खरीदारी की जानकारी जल्द उपलब्ध होगी।
+      </p>
+    </section>
+
+    <section class="card qr">
+      <h2>Scan & Pay with PhonePe</h2>
+
+      <img
+        src="/RDSFOUNDATION-/IMG-20261030-WA0015.jpg"
+        alt="PhonePe QR Code"
+        onerror="this.style.display='none'; document.getElementById('qr-error').style.display='block';"
+      >
+
+      <p id="qr-error" style="display:none;color:red;">
+        QR Code लोड नहीं हो पाया। कृपया बाद में कोशिश करें।
+      </p>
+
+      <p><strong>ROSHAN KUMAR</strong></p>
+      <p>PhonePe App से QR Scan करें।</p>
+    </section>
+
+    <div class="note">
+      <strong>महत्वपूर्ण:</strong>
+      भुगतान करने से पहले प्राप्तकर्ता का नाम और राशि जाँच लें।
+      यह पेज अभी भुगतान की पुष्टि या रसीद जारी नहीं करता।
     </div>
-    <p>अपनी पसंद की राशि PhonePe QR से भुगतान करें।</p>
-  </section>
 
-  <section class="card">
-    <h2>Study Materials</h2>
-    <p>Study Notes और PDF की खरीदारी की जानकारी जल्द उपलब्ध होगी।</p>
-  </section>
+  </main>
 
-  <section class="card qr">
-    <h2>Scan & Pay with PhonePe</h2>
-<img src="IMG-20261030-WA0015.jpg" alt="PhonePe QR Code">
-    <p><strong>ROSHAN KUMAR</strong></p>
-    <p>PhonePe App से QR Scan करें।</p>
-  </section>
+  <footer>
+    © RDS FOUNDATION | Education for Everyone
+  </footer>
 
-  <div class="note">
-    <strong>महत्वपूर्ण:</strong> भुगतान करने से पहले प्राप्तकर्ता का नाम और राशि जाँच लें।
-    यह पेज अभी भुगतान की पुष्टि या रसीद जारी नहीं करता।
-  </div>
-
-</main>
-
-<footer>© RDS FOUNDATION | Education for Everyone</footer>
 </body>
-    </html>
-
+</html>
